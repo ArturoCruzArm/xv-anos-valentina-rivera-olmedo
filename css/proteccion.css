@@ -1,0 +1,54 @@
+/* ========================================
+   PROTECCIÓN DE IMÁGENES - NO PERMITIR DESCARGA
+   ======================================== */
+
+/* Deshabilitar selección y arrastre de imágenes */
+img {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    -webkit-touch-callout: none;
+}
+
+/* Protección de contenedores de imágenes */
+.photo-image-container,
+.modal-image-container,
+.photo-card {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+/* Capa invisible sobre las imágenes para bloquear interacción directa */
+.photo-image-container::after,
+.modal-image-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    background: transparent;
+    z-index: 1;
+}
+
+/* Asegurar que los elementos interactivos tengan mayor z-index */
+.photo-number,
+.photo-badges,
+.modal-photo-number,
+.modal-close,
+.modal-nav,
+.option-buttons,
+.modal-actions {
+    position: relative;
+    z-index: 10;
+}

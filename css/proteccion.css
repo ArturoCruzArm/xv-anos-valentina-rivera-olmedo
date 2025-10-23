@@ -41,14 +41,24 @@ img {
     z-index: 1;
 }
 
-/* Asegurar que los elementos interactivos tengan mayor z-index */
+/* Asegurar que los elementos interactivos tengan mayor z-index y pointer-events */
 .photo-number,
 .photo-badges,
 .modal-photo-number,
 .modal-close,
 .modal-nav,
+.modal-nav-prev,
+.modal-nav-next,
 .option-buttons,
-.modal-actions {
+.option-btn,
+.modal-actions,
+.btn {
     position: relative;
     z-index: 10;
+    pointer-events: auto;
+}
+
+/* Asegurar que la foto-card sea clickeable */
+.photo-card {
+    pointer-events: auto;
 }

@@ -45,13 +45,24 @@ img {
 .photo-number,
 .photo-badges,
 .modal-photo-number,
+.option-buttons,
+.option-btn,
+.modal-actions {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* Los botones de navegación y cierre ya tienen position: absolute, solo necesitan pointer-events */
 .modal-close,
 .modal-nav,
 .modal-nav-prev,
-.modal-nav-next,
-.option-buttons,
-.option-btn,
-.modal-actions,
+.modal-nav-next {
+    pointer-events: auto !important;
+    z-index: 100 !important;
+}
+
+/* Los botones normales necesitan position: relative */
 .btn {
     position: relative;
     z-index: 10;

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Valentina Rivera Olmedo - XV Años</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #764ba2;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 1.5em;
+            color: #667eea;
+            font-style: italic;
+        }
+
+        /* Reproductor de música */
+        .music-player {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .music-player h2 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.8em;
+        }
+
+        .playlist {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .song-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .song-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .song-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .song-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+
+        .song-name {
+            flex: 1;
+            font-weight: bold;
+        }
+
+        .audio-controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .audio-controls audio {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 25px;
+        }
+
+        /* Sección de video */
+        .video-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 900px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .video-section h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .video-container video,
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-placeholder {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        /* Galería de fotos */
+        .gallery-section {
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-section h2 {
+            text-align: center;
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            aspect-ratio: 1;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 50px;
+            color: white;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header p {
+                font-size: 1.2em;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+
+            .lightbox-nav {
+                font-size: 30px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>✨ Valentina Rivera Olmedo ✨</h1>
+        <p>Mis XV Años - 18 de Octubre de 2025</p>
+    </div>
+
+    <!-- Reproductor de Música -->
+    <div class="music-player">
+        <h2>🎵 Música</h2>
+        <div class="playlist">
+            <div class="song-item" data-src="musica/Valentina, Eres Luz.mp3">
+                <span class="song-icon">♪</span>
+                <span class="song-name">Valentina, Eres Luz</span>
+            </div>
+            <div class="song-item" data-src="musica/Valentina espíritu indomable.mp3">
+                <span class="song-icon">♪</span>
+                <span class="song-name">Valentina Espíritu Indomable</span>
+            </div>
+            <div class="song-item" data-src="musica/🎶 Letra breve para Suno_ Valentina, Luz de Amor.mp3">
+                <span class="song-icon">♪</span>
+                <span class="song-name">Valentina, Luz de Amor</span>
+            </div>
+            <div class="song-item" data-src="musica/la nena.mp3">
+                <span class="song-icon">♪</span>
+                <span class="song-name">La Nena</span>
+            </div>
+        </div>
+        <div class="audio-controls">
+            <audio id="audioPlayer" controls>
+                <source id="audioSource" src="" type="audio/mpeg">
+                Tu navegador no soporta el reproductor de audio.
+            </audio>
+        </div>
+    </div>
+
+    <!-- Sección de Video -->
+    <div class="video-section">
+        <h2>🎬 Video de Recuerdos</h2>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/InpmAR4cGAU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Galería de Fotos -->
+    <div class="gallery-section">
+        <h2>📸 Galería de Fotos</h2>
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Las fotos se cargarán aquí con JavaScript -->
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <span class="lightbox-nav lightbox-prev" id="lightboxPrev">&#10094;</span>
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="">
+        </div>
+        <span class="lightbox-nav lightbox-next" id="lightboxNext">&#10095;</span>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>💜 Momentos inolvidables de un día especial 💜</p>
+    </div>
+
+    <script>
+        // Lista de fotos
+        const photos = [
+            'galeria/foto7_0003.jpg',
+            'galeria/foto7_0006.jpg',
+            'galeria/foto7_0030.jpg',
+            'galeria/foto7_0034.jpg',
+            'galeria/foto7_0039.jpg',
+            'galeria/foto7_0042.jpg',
+            'galeria/foto7_0047.jpg',
+            'galeria/foto7_0048.jpg',
+            'galeria/foto7_0049.jpg',
+            'galeria/foto7_0051.jpg',
+            'galeria/foto7_0052.jpg',
+            'galeria/foto7_0055.jpg',
+            'galeria/foto7_0057.jpg',
+            'galeria/foto7_0060.jpg',
+            'galeria/foto7_0063.jpg',
+            'galeria/foto7_0065.jpg',
+            'galeria/foto7_0068.jpg',
+            'galeria/foto7_0077.jpg'
+        ];
+
+        // Cargar galería
+        const galleryGrid = document.getElementById('galleryGrid');
+        photos.forEach((photo, index) => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.innerHTML = `<img src="${photo}" alt="Foto ${index + 1}" data-index="${index}">`;
+            item.addEventListener('click', () => openLightbox(index));
+            galleryGrid.appendChild(item);
+        });
+
+        // Lightbox
+        let currentPhotoIndex = 0;
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+
+        function openLightbox(index) {
+            currentPhotoIndex = index;
+            lightboxImg.src = photos[index];
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+        }
+
+        function prevPhoto() {
+            currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+            lightboxImg.src = photos[currentPhotoIndex];
+        }
+
+        function nextPhoto() {
+            currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+            lightboxImg.src = photos[currentPhotoIndex];
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', prevPhoto);
+        lightboxNext.addEventListener('click', nextPhoto);
+
+        // Cerrar con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') prevPhoto();
+            if (e.key === 'ArrowRight') nextPhoto();
+        });
+
+        // Cerrar al hacer click fuera de la imagen
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // Reproductor de música
+        const audioPlayer = document.getElementById('audioPlayer');
+        const audioSource = document.getElementById('audioSource');
+        const songItems = document.querySelectorAll('.song-item');
+
+        songItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const src = item.getAttribute('data-src');
+
+                // Remover clase active de todos
+                songItems.forEach(s => s.classList.remove('active'));
+
+                // Agregar clase active al actual
+                item.classList.add('active');
+
+                // Cambiar fuente y reproducir
+                audioSource.src = src;
+                audioPlayer.load();
+                audioPlayer.play();
+            });
+        });
+
+        // Auto-cargar primera canción
+        if (songItems.length > 0) {
+            songItems[0].click();
+        }
+    </script>
+</body>
+</html>
